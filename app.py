@@ -29,7 +29,17 @@ def predict():
     final_input=scalar.transform(np.array(data).reshape(1,-1))
     print(final_input)
     output=regmodel.predict(final_input)[0]
-    return render_template("home.html",prediction_text="the House price prediction is {}".format(output))
+    if output < 0:
+            # Show a friendly message instead of a negative prediction
+            return render_template(
+                "home.html",
+                prediction_text="Invalid input values provided. Please enter realistic feature values."
+            )
+    else:
+            return render_template(
+                "home.html",
+                prediction_text=f"The House price prediction is {round(output, 2)}"
+            )
 
 if __name__=="__main__":
     app.run(debug=True)
